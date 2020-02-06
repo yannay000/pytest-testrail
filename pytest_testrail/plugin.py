@@ -5,6 +5,7 @@ from operator import itemgetter
 import pytest
 import re
 import warnings
+from typing import Any, TypeVar
 
 # Reference: http://docs.gurock.com/testrail-api2/reference-statuses
 TESTRAIL_TEST_STATUS = {
@@ -70,6 +71,12 @@ class pytestrail(object):
                 :return pytest.mark:
                 """
         return pytest.mark.testrail_defects(defect_ids=defect_ids)
+        
+    ParameterSet = TypeVar('ParameterSet')
+    
+    @staticmethod 
+    def param(value: Any, case_id: str) -> ParameterSet:
+        return pytest.param(value, marks=pytestrail.case(case_id))        
 
 
 def testrail(*ids):
